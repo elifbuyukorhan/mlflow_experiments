@@ -1,7 +1,7 @@
 # The data set used in this example is from http://archive.ics.uci.edu/ml/datasets/Wine+Quality
 # P. Cortez, A. Cerdeira, F. Almeida, T. Matos and J. Reis.
 # Modeling wine preferences by data mining from physicochemical properties. In Decision Support Systems, Elsevier, 47(4):547-553, 2009.
-
+import os
 import logging
 import sys
 import warnings
@@ -17,8 +17,15 @@ import mlflow
 import mlflow.sklearn
 from mlflow.models import infer_signature
 
+os.environ['MLFLOW_TRACKING_USERNAME'] = 'elifbuyukorhan'
+os.environ['MLFLOW_TRACKING_PASSWORD'] = 'c394ca5c6342a5e28d4ff1e0a0785a0dfd349449'
+
 logging.basicConfig(level=logging.WARN)
 logger = logging.getLogger(__name__)
+
+## For remote server only(DAGShub)
+remote_server_uri="https://dagshub.com/elifbuyukorhan/mlflow_experiments.mlflow "
+mlflow.set_tracking_uri(remote_server_uri)
 
 
 def eval_metrics(actual, pred):
@@ -75,6 +82,8 @@ if __name__ == "__main__":
 
         predictions = lr.predict(train_x)
         signature = infer_signature(train_x, predictions)
+
+        
 
         tracking_url_type_store = urlparse(mlflow.get_tracking_uri()).scheme
 
